@@ -41,3 +41,7 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+/LearningDatabases/nbproject/private/
+/database_console/nbproject/private/
+/database_console/build/
+/database_console/dist/
