@@ -39,15 +39,14 @@ public class Workers extends javax.swing.JFrame
             String host = "jdbc:derby://localhost:1527/Employees";
             String userName = "testing";
             String password = "testing";
-            Connection con = DriverManager.getConnection(host, userName, password);
-            Statement stmt = con.createStatement();
-            String SQL = "SELECT * FROM Workers";
-            ResultSet rs = stmt.executeQuery(SQL);
-            rs.next();
-            this.jTextFieldID.setText(Integer.toString(rs.getInt("ID")));
-            this.jTextFieldFirstName.setText(rs.getString("First_Name"));
-            this.jTextFieldLastName.setText(rs.getString("Last_Name"));
-            this.jTextFieldJobTitle.setText(rs.getString("Job_Title"));
+            this.connection = DriverManager.getConnection(host, userName, password);
+            this.statement = this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            this.resultSet = this.statement.executeQuery("SELECT * FROM Workers");
+            this.resultSet.next();
+            this.jTextFieldID.setText(Integer.toString(this.resultSet.getInt("ID")));
+            this.jTextFieldFirstName.setText(this.resultSet.getString("First_Name"));
+            this.jTextFieldLastName.setText(this.resultSet.getString("Last_Name"));
+            this.jTextFieldJobTitle.setText(this.resultSet.getString("Job_Title"));
         } catch (SQLException err)
         {
             JOptionPane.showMessageDialog(Workers.this, err.getMessage());
@@ -70,6 +69,11 @@ public class Workers extends javax.swing.JFrame
         jTextFieldJobTitle = new javax.swing.JTextField();
         jLabelJobTitle = new javax.swing.JLabel();
         jTextFieldID = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jButtonFirst = new javax.swing.JButton();
+        jButtonNext = new javax.swing.JButton();
+        jButtonLast = new javax.swing.JButton();
+        jButtonPrevious = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,13 +120,75 @@ public class Workers extends javax.swing.JFrame
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jButtonFirst.setText("First");
+        jButtonFirst.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonFirstActionPerformed(evt);
+            }
+        });
+
+        jButtonNext.setText("Next");
+        jButtonNext.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonNextActionPerformed(evt);
+            }
+        });
+
+        jButtonLast.setText("Last");
+        jButtonLast.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonLastActionPerformed(evt);
+            }
+        });
+
+        jButtonPrevious.setText("Previous");
+        jButtonPrevious.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonPreviousActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jButtonFirst)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonPrevious)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonNext)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonLast)
+                .addGap(29, 29, 29))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jButtonFirst)
+                .addComponent(jButtonNext)
+                .addComponent(jButtonLast)
+                .addComponent(jButtonPrevious))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -130,7 +196,9 @@ public class Workers extends javax.swing.JFrame
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(127, Short.MAX_VALUE))
         );
 
         pack();
@@ -140,6 +208,84 @@ public class Workers extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jTextFieldIDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldIDActionPerformed
+
+    private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonNextActionPerformed
+    {//GEN-HEADEREND:event_jButtonNextActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            if (resultSet.next())
+            {
+                this.jTextFieldID.setText(Integer.toString(this.resultSet.getInt("ID")));
+                this.jTextFieldFirstName.setText(this.resultSet.getString("First_Name"));
+                this.jTextFieldLastName.setText(this.resultSet.getString("Last_Name"));
+                this.jTextFieldJobTitle.setText(this.resultSet.getString("Job_Title"));
+
+            } else
+            {
+                resultSet.previous();
+                JOptionPane.showMessageDialog(Workers.this, "End of File");
+            }
+        } catch (SQLException err)
+        {
+            JOptionPane.showMessageDialog(Workers.this, err.getMessage());
+        }
+    }//GEN-LAST:event_jButtonNextActionPerformed
+
+    private void jButtonPreviousActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonPreviousActionPerformed
+    {//GEN-HEADEREND:event_jButtonPreviousActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            if (resultSet.previous())
+            {
+                this.jTextFieldID.setText(Integer.toString(this.resultSet.getInt("ID")));
+                this.jTextFieldFirstName.setText(this.resultSet.getString("First_Name"));
+                this.jTextFieldLastName.setText(this.resultSet.getString("Last_Name"));
+                this.jTextFieldJobTitle.setText(this.resultSet.getString("Job_Title"));
+
+            } else
+            {
+                resultSet.next();
+                JOptionPane.showMessageDialog(Workers.this, "Beginning of File");
+            }
+        } catch (SQLException err)
+        {
+            JOptionPane.showMessageDialog(Workers.this, err.getMessage());
+        }
+    }//GEN-LAST:event_jButtonPreviousActionPerformed
+
+    private void jButtonLastActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonLastActionPerformed
+    {//GEN-HEADEREND:event_jButtonLastActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            resultSet.last();
+            this.jTextFieldID.setText(Integer.toString(this.resultSet.getInt("ID")));
+            this.jTextFieldFirstName.setText(this.resultSet.getString("First_Name"));
+            this.jTextFieldLastName.setText(this.resultSet.getString("Last_Name"));
+            this.jTextFieldJobTitle.setText(this.resultSet.getString("Job_Title"));
+        } catch (SQLException err)
+        {
+            JOptionPane.showMessageDialog(Workers.this, err.getMessage());
+        }
+    }//GEN-LAST:event_jButtonLastActionPerformed
+
+    private void jButtonFirstActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonFirstActionPerformed
+    {//GEN-HEADEREND:event_jButtonFirstActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            resultSet.first();
+            this.jTextFieldID.setText(Integer.toString(this.resultSet.getInt("ID")));
+            this.jTextFieldFirstName.setText(this.resultSet.getString("First_Name"));
+            this.jTextFieldLastName.setText(this.resultSet.getString("Last_Name"));
+            this.jTextFieldJobTitle.setText(this.resultSet.getString("Job_Title"));
+        } catch (SQLException err)
+        {
+            JOptionPane.showMessageDialog(Workers.this, err.getMessage());
+        }
+    }//GEN-LAST:event_jButtonFirstActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,8 +333,13 @@ public class Workers extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonFirst;
+    private javax.swing.JButton jButtonLast;
+    private javax.swing.JButton jButtonNext;
+    private javax.swing.JButton jButtonPrevious;
     private javax.swing.JLabel jLabelJobTitle;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextFieldFirstName;
     private javax.swing.JTextField jTextFieldID;
     private javax.swing.JTextField jTextFieldJobTitle;
