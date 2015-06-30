@@ -14,6 +14,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class Workers extends javax.swing.JFrame
@@ -22,6 +24,7 @@ public class Workers extends javax.swing.JFrame
     Connection connection;
     Statement statement;
     ResultSet resultSet;
+    int currentRow = 0;
 
     /**
      * Creates new form Workers
@@ -74,6 +77,12 @@ public class Workers extends javax.swing.JFrame
         jButtonNext = new javax.swing.JButton();
         jButtonLast = new javax.swing.JButton();
         jButtonPrevious = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jButtonUpdateRecord = new javax.swing.JButton();
+        jButtonDeleteRecord = new javax.swing.JButton();
+        jButtonNewRecord = new javax.swing.JButton();
+        jButtonSaveNewRecord = new javax.swing.JButton();
+        jButtonCancelNewRecord = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,7 +112,7 @@ public class Workers extends javax.swing.JFrame
                         .addGap(18, 18, 18)
                         .addComponent(jTextFieldLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jTextFieldJobTitle))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,15 +189,99 @@ public class Workers extends javax.swing.JFrame
                 .addComponent(jButtonPrevious))
         );
 
+        jButtonUpdateRecord.setText("Update Record");
+        jButtonUpdateRecord.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonUpdateRecordActionPerformed(evt);
+            }
+        });
+
+        jButtonDeleteRecord.setText("Delete Record");
+        jButtonDeleteRecord.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonDeleteRecordActionPerformed(evt);
+            }
+        });
+
+        jButtonNewRecord.setText("New Record");
+        jButtonNewRecord.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonNewRecordActionPerformed(evt);
+            }
+        });
+
+        jButtonSaveNewRecord.setText("Save New Record");
+        jButtonSaveNewRecord.setEnabled(false);
+        jButtonSaveNewRecord.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonSaveNewRecordActionPerformed(evt);
+            }
+        });
+
+        jButtonCancelNewRecord.setText("Cancel New Record");
+        jButtonCancelNewRecord.setEnabled(false);
+        jButtonCancelNewRecord.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonCancelNewRecordActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(jButtonUpdateRecord)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonDeleteRecord)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButtonNewRecord)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addComponent(jButtonSaveNewRecord)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonCancelNewRecord)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonUpdateRecord)
+                    .addComponent(jButtonDeleteRecord))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonNewRecord)
+                    .addComponent(jButtonSaveNewRecord)
+                    .addComponent(jButtonCancelNewRecord))
+                .addGap(21, 21, 21))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -198,7 +291,9 @@ public class Workers extends javax.swing.JFrame
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38))
         );
 
         pack();
@@ -287,6 +382,87 @@ public class Workers extends javax.swing.JFrame
         }
     }//GEN-LAST:event_jButtonFirstActionPerformed
 
+    private void jButtonUpdateRecordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonUpdateRecordActionPerformed
+    {//GEN-HEADEREND:event_jButtonUpdateRecordActionPerformed
+        // TODO add your handling code here:
+        String first = this.jTextFieldFirstName.getText();
+        String last = this.jTextFieldLastName.getText();
+        String job = this.jTextFieldJobTitle.getText();
+        String ID = this.jTextFieldID.getText();
+        try
+        {
+            int newID = Integer.parseInt(ID);
+            this.resultSet.updateInt("ID", newID);
+            this.resultSet.updateString("First_Name", first);
+            this.resultSet.updateString("last_Name", last);
+            this.resultSet.updateString("Job_Title", job);
+            this.resultSet.updateRow();
+            JOptionPane.showMessageDialog(Workers.this, "Updated");
+        } catch (SQLException err)
+        {
+             JOptionPane.showMessageDialog(Workers.this, err.getMessage());
+        }
+
+    }//GEN-LAST:event_jButtonUpdateRecordActionPerformed
+
+    private void jButtonDeleteRecordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonDeleteRecordActionPerformed
+    {//GEN-HEADEREND:event_jButtonDeleteRecordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonDeleteRecordActionPerformed
+
+    private void jButtonNewRecordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonNewRecordActionPerformed
+    {//GEN-HEADEREND:event_jButtonNewRecordActionPerformed
+        try
+        {
+            // TODO add your handling code here:
+            this.jButtonFirst.setEnabled(false);
+            this.jButtonPrevious.setEnabled(false);
+            this.jButtonNext.setEnabled(false);
+            this.jButtonLast.setEnabled(false);
+            this.jButtonUpdateRecord.setEnabled(false);
+            this.jButtonDeleteRecord.setEnabled(false);
+            this.jButtonNewRecord.setEnabled(false);
+            this.jButtonSaveNewRecord.setEnabled(true);
+            this.jButtonCancelNewRecord.setEnabled(true);
+            this.jTextFieldFirstName.setText("");
+            this.jTextFieldID.setText("");
+            this.jTextFieldJobTitle.setText("");
+            this.jTextFieldLastName.setText("");
+            this.currentRow = this.resultSet.getRow();
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(Workers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonNewRecordActionPerformed
+
+    private void jButtonCancelNewRecordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonCancelNewRecordActionPerformed
+    {//GEN-HEADEREND:event_jButtonCancelNewRecordActionPerformed
+        // TODO add your handling code here:
+        this.jButtonFirst.setEnabled(true);
+        this.jButtonPrevious.setEnabled(true);
+        this.jButtonNext.setEnabled(true);
+        this.jButtonLast.setEnabled(true);
+        this.jButtonUpdateRecord.setEnabled(true);
+        this.jButtonDeleteRecord.setEnabled(true);
+        this.jButtonNewRecord.setEnabled(true);
+        this.jButtonSaveNewRecord.setEnabled(false);
+        this.jButtonCancelNewRecord.setEnabled(false);
+    }//GEN-LAST:event_jButtonCancelNewRecordActionPerformed
+
+    private void jButtonSaveNewRecordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonSaveNewRecordActionPerformed
+    {//GEN-HEADEREND:event_jButtonSaveNewRecordActionPerformed
+        // TODO add your handling code here:
+        this.jButtonFirst.setEnabled(true);
+        this.jButtonPrevious.setEnabled(true);
+        this.jButtonNext.setEnabled(true);
+        this.jButtonLast.setEnabled(true);
+        this.jButtonUpdateRecord.setEnabled(true);
+        this.jButtonDeleteRecord.setEnabled(true);
+        this.jButtonNewRecord.setEnabled(true);
+        this.jButtonSaveNewRecord.setEnabled(false);
+        this.jButtonCancelNewRecord.setEnabled(false);
+    }//GEN-LAST:event_jButtonSaveNewRecordActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -333,13 +509,19 @@ public class Workers extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonCancelNewRecord;
+    private javax.swing.JButton jButtonDeleteRecord;
     private javax.swing.JButton jButtonFirst;
     private javax.swing.JButton jButtonLast;
+    private javax.swing.JButton jButtonNewRecord;
     private javax.swing.JButton jButtonNext;
     private javax.swing.JButton jButtonPrevious;
+    private javax.swing.JButton jButtonSaveNewRecord;
+    private javax.swing.JButton jButtonUpdateRecord;
     private javax.swing.JLabel jLabelJobTitle;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTextFieldFirstName;
     private javax.swing.JTextField jTextFieldID;
     private javax.swing.JTextField jTextFieldJobTitle;
